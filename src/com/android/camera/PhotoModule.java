@@ -1700,8 +1700,12 @@ public class PhotoModule
         mPreviewRestartSupport &= (mBurstSnapNum == 1);
         // Restart is needed  if HDR is enabled
         mPreviewRestartSupport &= !CameraUtil.SCENE_MODE_HDR.equals(mSceneMode);
-        mPreviewRestartSupport &= PIXEL_FORMAT_JPEG.equalsIgnoreCase(
-                pictureFormat);
+        if (pictureFormat != null) {
+            mPreviewRestartSupport &= PIXEL_FORMAT_JPEG.equalsIgnoreCase(
+                    pictureFormat);
+        } else {
+            Log.e(TAG, "capture(): pictureFormat is null!");
+        }
 
         // We don't want user to press the button again while taking a
         // multi-second HDR photo. For longshot, no need to disable.
@@ -1973,7 +1977,7 @@ public class PhotoModule
         }
         /* Disable focus if aebracket is ON */
         String aeBracket = mParameters.get(CameraSettings.KEY_QC_AE_BRACKETING);
-        if (!aeBracket.equalsIgnoreCase("off")) {
+        if (aeBracket != null && !aeBracket.equalsIgnoreCase("off")) {
             flashMode = Parameters.FLASH_MODE_OFF;
             mParameters.setFlashMode(flashMode);
         }
@@ -3619,7 +3623,7 @@ public class PhotoModule
 
         /* Disable focus if aebracket is ON */
         String aeBracket = mParameters.get(CameraSettings.KEY_QC_AE_BRACKETING);
-        if (!aeBracket.equalsIgnoreCase("off")) {
+        if (aeBracket != null && !aeBracket.equalsIgnoreCase("off")) {
             String fMode = Parameters.FLASH_MODE_OFF;
             mParameters.setFlashMode(fMode);
         }
