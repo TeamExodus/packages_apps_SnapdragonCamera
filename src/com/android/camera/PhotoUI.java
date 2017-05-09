@@ -524,7 +524,7 @@ public class PhotoUI implements PieListener,
 
         if (mGestures == null) {
             // this will handle gesture disambiguation and dispatching
-            mGestures = new PreviewGestures(mActivity, this, mZoomRenderer, mPieRenderer);
+            mGestures = new PreviewGestures(mActivity, this, mZoomRenderer, mPieRenderer, null);
             mRenderOverlay.setGestures(mGestures);
         }
         mGestures.setPhotoMenu(mMenu);
@@ -559,7 +559,7 @@ public class PhotoUI implements PieListener,
     }
 
     public void initializeControlByIntent() {
-        if (!mActivity.isSecureCamera()) {
+        if (!mActivity.isSecureCamera() && !mActivity.isCaptureIntent()) {
             mThumbnail = (ImageView) mRootView.findViewById(R.id.preview_thumb);
             mThumbnail.setOnClickListener(new OnClickListener() {
                 @Override
@@ -728,7 +728,7 @@ public class PhotoUI implements PieListener,
         // make sure the correct value was found
         // otherwise use auto index
         mOnScreenIndicators.updateWBIndicator(wbIndex < 0 ? 2 : wbIndex);
-        boolean location = RecordLocationPreference.get(prefs);
+        boolean location = RecordLocationPreference.get(prefs, CameraSettings.KEY_RECORD_LOCATION);
         mOnScreenIndicators.updateLocationIndicator(location);
     }
 
@@ -1016,6 +1016,7 @@ public class PhotoUI implements PieListener,
         CameraUtil.fadeIn(mReviewDoneButton);
         mShutterButton.setVisibility(View.INVISIBLE);
         CameraUtil.fadeIn(mReviewRetakeButton);
+        setOrientation(mOrientation, true);
         mMenu.hideTopMenu(true);
         pauseFaceDetection();
     }
@@ -1228,6 +1229,9 @@ public class PhotoUI implements PieListener,
             mLocationDialog.dismiss();
         }
         mLocationDialog = null;
+        if (mMenu != null) {
+            mMenu.animateSlideOutPreviewMenu();
+        }
     }
 
     public void initDisplayChangeListener() {

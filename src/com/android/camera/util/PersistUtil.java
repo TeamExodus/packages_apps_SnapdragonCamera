@@ -32,24 +32,56 @@ import android.os.SystemProperties;
 
 public class PersistUtil {
 
-    private static final String PERSIST_MEMORY_LIMIT = "persist.camera.perf.memlimit";
-    private static final String PERSIST_SKIP_MEMORY_CHECK = "persist.camera.perf.skip_memck";
-    private static final String PERSIST_LONGSHOT_SHOT_LIMIT = "persist.camera.longshot.shotnum";
-    private static final String PERSIST_CAMERA_PREVIEW_SIZE = "persist.camera.preview.size";
+    private static final int PERSIST_MEMORY_LIMIT =
+            SystemProperties.getInt("persist.camera.perf.memlimit", 60);
+    private static final boolean PERSIST_SKIP_MEMORY_CHECK =
+            SystemProperties.getBoolean("persist.camera.perf.skip_memck", false);
+    private static final int PERSIST_LONGSHOT_SHOT_LIMIT =
+            SystemProperties.getInt("persist.camera.longshot.shotnum", 50);
+    private static final int PERSIST_CAMERA_PREVIEW_SIZE =
+            SystemProperties.getInt("persist.camera.preview.size", 0);
+    private static final boolean PERSIST_CAMERA_CAMERA2 =
+            SystemProperties.getBoolean("persist.camera.camera2", false);
+    private static final boolean PERSIST_CAMERA_ZSL =
+            SystemProperties.getBoolean("persist.camera.zsl.disabled", false);
+    private static final int PERSIST_CAMERA_CANCEL_TOUCHFOCUS_DELAY =
+            SystemProperties.getInt("persist.camera.focus_delay", 5000);
+    private static final int PERSIST_CAMERA2_DEBUG =
+            SystemProperties.getInt("persist.camera2.debug", 0);
+
+    public static final int CAMERA2_DEBUG_DUMP_IMAGE = 1;
+    public static final int CAMERA2_DEBUG_DUMP_LOG = 2;
+    public static final int CAMERA2_DEBUG_DUMP_ALL = 100;
 
     public static int getMemoryLimit() {
-        return SystemProperties.getInt(PERSIST_MEMORY_LIMIT, 60);
+        return PERSIST_MEMORY_LIMIT;
     }
 
     public static boolean getSkipMemoryCheck() {
-        return SystemProperties.getBoolean(PERSIST_SKIP_MEMORY_CHECK, false);
+        return PERSIST_SKIP_MEMORY_CHECK;
     }
 
     public static int getLongshotShotLimit() {
-        return SystemProperties.getInt(PERSIST_LONGSHOT_SHOT_LIMIT, 20);
+        return PERSIST_LONGSHOT_SHOT_LIMIT;
     }
 
     public static int getCameraPreviewSize() {
-        return SystemProperties.getInt(PERSIST_CAMERA_PREVIEW_SIZE, 0);
+        return PERSIST_CAMERA_PREVIEW_SIZE;
+    }
+
+    public static boolean getCamera2Mode() {
+        return PERSIST_CAMERA_CAMERA2;
+    }
+
+    public static boolean getCameraZSLDisabled() {
+        return PERSIST_CAMERA_ZSL;
+    }
+
+    public static int getCamera2Debug() {
+        return PERSIST_CAMERA2_DEBUG;
+    }
+
+    public static int getCancelTouchFocusDelay() {
+        return PERSIST_CAMERA_CANCEL_TOUCHFOCUS_DELAY;
     }
 }
